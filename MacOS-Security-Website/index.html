@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MacOS-Security: the stockbook</title>
+<meta name="description" content="Shell scripts and settings that harden macOS security and privacy, browsed leaf by leaf.">
+<style>
+@font-face { font-family: AlegreyaSans; src: url(fonts/AlegreyaSans-Regular.ttf); }
+@font-face { font-family: AlegreyaSans; src: url(fonts/AlegreyaSans-Bold.ttf); font-weight: 700; }
+:root { --green:#1a3e2c; --cream:#eee4c8; --black:#100f0e; --gilt:#c6a44a; --brown:#6e4a26; }
+* { box-sizing: border-box; } body { margin: 0; font-family: AlegreyaSans, sans-serif; background: var(--cream); color: #1c1a16; line-height: 1.65; }
+.layout { display: flex; align-items: stretch; }
+.rail { position: fixed; top: 0; bottom: 0; width: 218px; background: var(--green); color: var(--cream); padding: 1.4rem 1rem; overflow-y: auto; }
+.rail h2 { font-size: 0.95rem; letter-spacing: 0.22em; text-transform: uppercase; border-bottom: 1px solid var(--gilt); padding-bottom: 0.5rem; }
+.rail a { display: block; color: var(--cream); text-decoration: none; padding: 0.45rem 0.4rem; letter-spacing: 0.06em; }
+.rail a:hover, .rail a.active { color: var(--gilt); }
+.rail .perfo { display: inline-block; width: 10px; height: 10px; border: 1px dotted #9a8f6e; background: var(--cream); margin-right: 0.5rem; }
+.rail a:hover .perfo { background: var(--gilt); }
+main { margin-left: 218px; max-width: 880px; padding: 2rem 4vw 3rem; }
+header img.banner { width: 100%; height: auto; }
+header img.logo { width: 84px; height: 84px; }
+h1 { letter-spacing: 0.18em; text-transform: uppercase; font-size: 1.9rem; border-bottom: 2px solid var(--gilt); padding-bottom: 0.4rem; }
+h2 { letter-spacing: 0.16em; text-transform: uppercase; font-size: 1.15rem; }
+.leaf { background: #f4edd8; border: 1px solid #cbbd92; padding: 1.3rem 1.6rem; margin: 2rem 0; position: relative; }
+.leaf::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 18%; background: rgba(235,240,235,0.45); border-bottom: 1px solid #d8dcd2; }
+.mount { background: var(--black); padding: 1rem 1.2rem; margin: 1rem 0; position: relative; }
+.mount .face { background: #f4edd8; padding: 0.9rem 1.1rem; }
+.mount::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 20%; background: rgba(235,240,235,0.35); }
+.warn { border-left: 10px solid var(--brown); }
+.note { border-left: 10px solid var(--green); }
+.card-btn { display: inline-block; background: var(--cream); color: #1c1a16; border: 1px solid #141210; box-shadow: inset 0 0 0 3px var(--cream), inset 0 0 0 4px var(--gilt); padding: 0.55rem 1.1rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; font-size: 0.85rem; position: relative; overflow: hidden; transition: transform 0.12s; margin: 0.25rem; }
+.card-btn:hover { transform: translateY(-2px); }
+.card-btn:active { transform: translateY(1px); box-shadow: inset 0 0 0 3px var(--cream), inset 0 0 0 4px var(--gilt); }
+pre.code { background: var(--black); color: #e8e6df; padding: 1rem; overflow-x: auto; font-size: 0.85rem; }
+.strip { height: 26px; background: rgba(235,240,235,0.55); border-top: 1px solid #cfd4c8; border-bottom: 1px solid #cfd4c8; position: relative; margin: 2.2rem 0; }
+.strip::after { content: ""; position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; background: var(--cream); border: 1px dotted #6b6248; }
+a { color: #20503a; } a:visited { color: #4a7a5e; }
+footer { background: var(--brown); color: var(--cream); padding: 1.4rem 4vw; margin-left: 218px; }
+footer a { color: var(--gilt); }
+.shots img { width: 100%; height: auto; }
+@media (max-width: 760px) { .rail { position: static; width: auto; } .layout { flex-direction: column; } main, footer { margin-left: 0; } }
+</style></head><body>
+<div class="layout">
+<nav class="rail" aria-label="stock index"><h2>Stock Index</h2>
+<a href="#collection"><span class="perfo"></span>The Collection</a>
+<a href="#warning"><span class="perfo"></span>The Warning Leaf</a>
+<a href="#script"><span class="perfo"></span>The Hardening Script</a>
+<a href="#privacy"><span class="perfo"></span>Privacy Choices</a>
+<a href="#checking"><span class="perfo"></span>Checking Your Machine</a>
+<a href="#undoing"><span class="perfo"></span>Undoing a Change</a>
+<a href="#sheets"><span class="perfo"></span>The Sheets</a>
+<a href="https://github.com/Epsilon0xCell/MacOS-Security"><span class="perfo"></span>The Repo</a>
+</nav>
+<main>
+<header><img class="logo" src="assets/logo.png" alt="MacOS-Security logo"><img class="banner" src="assets/banner.png" alt="">
+<h1>MacOS-Security</h1><p>Harden macOS.</p>
+<p><a class="card-btn" href="#warning">Read the warning leaf</a> <a class="card-btn" href="https://github.com/Epsilon0xCell/MacOS-Security">Open the repo</a></p></header>
+<section class="leaf" id="collection"><h2>The Collection</h2>
+<p>This repo is a gathering of shell scripts and settings that tighten macOS security and privacy. The headline piece is <code>privacy-script.sh</code>, a generated privacy.sexy script. Everything in the collection is presented the way a dealer presents stock: one mounted item at a time, with its condition noted before you handle it.</p>
+<p>Source: <a href="https://github.com/Epsilon0xCell/MacOS-Security">github.com/Epsilon0xCell/MacOS-Security</a>. Licence: MIT (see the LICENSE file in the repo).</p></section>
+<div class="strip"></div>
+<section class="leaf" id="warning"><h2>The Warning Leaf</h2>
+<div class="mount warn"><div class="face"><h3>Condition Note: Read This Before You Run privacy-script.sh</h3>
+<p><code>privacy-script.sh</code> is a generated privacy.sexy script (v0.13.7). It runs as root: if you start it as a normal user, it starts itself again with administrator privileges and then runs to the end with no prompt, no dry run, and no backup step.</p>
+<p>Running it deletes or resets the following, and none of it can be undone from anything in this repo:</p>
+<ul>
+<li>Firefox saved password files: <code>logins.json</code>, <code>signons.txt</code>, <code>signons2.txt</code>, <code>signons3.txt</code>, and <code>signons.sqlite</code> in every Firefox profile. Saved Firefox passwords are gone after this runs.</li>
+<li>All iOS device backups stored on this Mac, under <code>~/Library/Application Support/MobileSync/Backup/</code>.</li>
+<li>System logs, including everything under <code>/private/var/log/</code>.</li>
+<li>Shell histories for your account, the history files your terminal sessions are saved in.</li>
+<li>Browser histories and cookies, for the browsers the script covers, including Chrome, Safari, and Firefox history, cache, cookies, and download history.</li>
+<li>Every TCC permission grant on the machine. TCC is the system database that records which apps you allowed to use the camera, the microphone, accessibility, screen capture, and the other protected services the script resets, one by one. After this runs, every one of those allow decisions is wiped and apps have to ask again.</li>
+</ul>
+<p>The script also clears caches, the Trash, printer job caches, and developer caches, turns several system services off, and turns Spotlight indexing off near the end.</p>
+<p>If you need any of the items in the list above, copy them somewhere else before you run this file, or do not run it.</p>
+</div></div></section>
+<div class="strip"></div>
+<section class="leaf" id="script"><h2>The Hardening Script</h2>
+<p><code>privacy-script.sh</code> is published as generated, with its sections labeled in the file itself. That labeling is not a safety pause: by the time a section name prints, that section is already running. Inspect the file first, section by section, the way you would examine each stamp in a row before paying for the page.</p>
+<div class="mount"><div class="face"><p>File: <code>privacy-script.sh</code>, generated by privacy.sexy, version 0.13.7. It starts itself again with administrator privileges when started as a normal user.</p></div></div></section>
+<div class="strip"></div>
+<section class="leaf" id="privacy"><h2>Privacy Choices</h2>
+<p>The privacy choices in this collection are the resets and clearances listed on the warning leaf: browser history, cache, cookies and download history for Chrome, Safari, and Firefox; shell histories; system logs; and the TCC permission database. Each one is a deletion or a reset, not a toggle you can flip back from inside this repo.</p></section>
+<div class="strip"></div>
+<section class="leaf" id="checking"><h2>Checking Your Own Machine</h2>
+<p>Check before and after by the same list: are the Firefox password files still in your profiles, do iOS backups still sit under <code>~/Library/Application Support/MobileSync/Backup/</code>, do apps still hold the camera and microphone grants you gave them, and is Spotlight indexing still on. After the script runs, apps asking again for camera, microphone, accessibility, and screen capture is the expected sign that the TCC reset happened.</p></section>
+<div class="strip"></div>
+<section class="leaf" id="undoing"><h2>Undoing a Change</h2>
+<div class="mount note"><div class="face"><p>There is no undo step in this repo. Deleted password files, backups, logs, and histories cannot be restored from anything here, and TCC grants are re-made only by allowing each app again when it asks. The only reversal this collection offers is the one you prepare yourself: copy anything you need somewhere else before you run the script, or do not run it.</p></div></div></section>
+<div class="strip"></div>
+<section class="leaf" id="sheets"><h2>The Sheets</h2>
+<p>The drawn sheet for this repo lives in the <a href="https://github.com/Epsilon0xCell/MacOS-Security/tree/main/MacOS-Security-Visuals">MacOS-Security-Visuals</a> folder.</p>
+<div class="shots"><img src="assets/schematic.png" alt="Hand drawn schematic sheet for MacOS-Security"></div></section>
+</main></div>
+<footer><p>MacOS-Security is one of my projects. The warning on this page comes before any command because the script it describes runs as root with no prompt, no dry run, and no backup step.</p></footer>
+</body></html>

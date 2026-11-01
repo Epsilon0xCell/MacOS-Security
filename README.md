@@ -1,7 +1,15 @@
-![Banner](banner.png)
+![Introduction banner](intro-banner.png)
 
 # MacOS-Security
 Harden macOS
+
+![Banner](banner.png)
+
+<img src="assets-scene.svg" alt="Animated themed scene" width="100%">
+
+> CONDITION NOTE: `privacy-script.sh` is a generated privacy.sexy script (v0.13.7). It runs as root: if you start it as a normal user, it starts itself again with administrator privileges and then runs to the end with no prompt, no dry run, and no backup step.
+
+> BEFORE YOU RUN: If you need any of the items in the list above, copy them somewhere else before you run this file, or do not run it.
 
 ## Warning: read this before you run privacy-script.sh
 
